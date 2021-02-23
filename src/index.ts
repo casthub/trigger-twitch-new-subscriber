@@ -1,9 +1,12 @@
-module.exports = class extends window.casthub.card.trigger {
+import { PropList, PropType } from '@casthub/types';
 
-    /**
-     * @return {Promise}
-     */
-    async mounted() {
+export default class extends window.casthub.card.trigger<{
+    sub: boolean;
+    resub: boolean;
+    subgift: boolean;
+    anonsubgift: boolean;
+}> {
+    async mounted(): Promise<void> {
         await super.mounted();
 
         const { id } = this.identity;
@@ -42,11 +45,7 @@ module.exports = class extends window.casthub.card.trigger {
         });
     }
 
-    /**
-     * @param {String} type
-     * @param {Object} data
-     */
-    newSub(type, data) {
+    newSub(type: string, data: any): void {
         let months = 0;
 
         if (parseInt(data['msg-param-months']) > 1) {
@@ -70,11 +69,7 @@ module.exports = class extends window.casthub.card.trigger {
         });
     }
 
-    /**
-     * @param {String} username
-     * @param {Object} data
-     */
-    newSubGift(type, data) {
+    newSubGift(type: string, data: any): void {
         let id = null;
         let username = 'Anonymous';
 
@@ -100,32 +95,28 @@ module.exports = class extends window.casthub.card.trigger {
         });
     }
 
-    /**
-     * @return {Promise}
-     */
-    async prepareProps() {
+    async prepareProps(): Promise<PropList> {
         return {
             sub: {
-                type: 'toggle',
+                type: PropType.Toggle,
                 label: 'Subscriptions',
                 default: true,
             },
             resub: {
-                type: 'toggle',
+                type: PropType.Toggle,
                 label: 'Resubscriptions',
                 default: true,
             },
             subgift: {
-                type: 'toggle',
+                type: PropType.Toggle,
                 label: 'Gifted Subscriptions',
                 default: true,
             },
             anonsubgift: {
-                type: 'toggle',
+                type: PropType.Toggle,
                 label: 'Gifted Subscriptions (Anonymous)',
                 default: true,
             },
         };
     }
-
-};
+}
